@@ -1,0 +1,2007 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop Management App</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #e8edf5;
+    }
+
+    /* Header */
+    header {
+      background: white;
+      padding: 10px;
+      text-align: center;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin: 10px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    header .logo {
+      height: 90px;
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+
+    /* Search & Nav Section */
+    .search-nav {
+      background: white;
+      margin: 10px;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid #ccc;
+      padding: 5px 10px;
+      border-radius: 25px;
+      margin-bottom: 10px;
+    }
+
+    .search-bar input {
+      border: none;
+      outline: none;
+      flex: 1;
+      padding: 8px;
+      font-size: 16px;
+      border: none    !important;
+      outline: none   !important;
+    }
+
+    .search-bar button {
+      background: none;
+      border: none; 
+      cursor: pointer;
+    }
+
+    .search-bar img {
+      height: 24px;
+      width: 24px;
+    }
+
+    /* Navigation */
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    nav button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+
+    nav button:hover {
+      background: #0056b3;
+    }
+
+    /* Main */
+    main {
+      background: #f5f6fa;
+      margin: 10px;
+      padding: 20px;
+      min-height: 400px;
+      border-radius: 6px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+     
+
+    
+    /**************************************
+        HOME PAGE STYLES
+    **************************************/
+       .slideshow-container {
+  	position: relative;
+  	margin: auto;
+  	max-width: 900px;
+	}
+     .slide {
+  	display: none;
+	}
+     .slide img {
+  	border-radius: 14px;
+  	width: 100%;
+  	box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+       }
+     .prev, .next {
+  	cursor: pointer;
+  	position: absolute;
+  	top: 50%;              
+  	width: 40px;           
+  	height: 40px;          
+  	margin-top: -20px;    
+  	color: white;
+  	font-weight: bold;
+  	font-size: 30px;       
+  	border-radius: 50%;    
+  	background: blue;
+  	user-select: none;
+  	transition: background 0.3s;
+  	display: flex;
+  	justify-content: center;
+  	align-items: center;
+  	z-index: 10;           
+	}
+      .prev {
+  	left: -50px;          
+  	border-radius: 50% 50% 50% 50%;  
+	}
+      .next {
+  	right: -50px;         
+  	border-radius: 50% 50% 50% 50%;  
+	}
+      .prev:hover, .next:hover {
+  	background:lightgreen;
+	}
+     .dot {
+  	cursor: pointer;
+  	height: 13px;
+  	width: 13px;
+  	margin: 0 4px;
+  	background-color: #bbb;
+  	border-radius: 50%;
+  	display: inline-block;
+  	transition: background 0.3s;
+	}
+     .active, .dot:hover {
+  	background-color: #007bff;
+	}
+
+
+
+	
+    /**************************************
+        ITEMS PAGE STYLES
+    **************************************/
+    .manage-items {
+      text-align: center;
+      color: blue;
+      background: white;
+      padding: 50px;
+      margin-top: 40px;
+      border-radius: 40px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .manage-items input {
+      margin: 5px;
+      width: 300px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+    }
+
+    .manage-items button {
+      margin: 8px;
+      padding: 12px 16px;
+      background-color: #28a745;
+      border: none;
+      border-radius: 40px;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .manage-items button:hover {
+      background: blue;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 35px;
+      border-collapse: collapse;
+    }
+
+    table th,
+    table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+
+    table th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .action-btn {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 2px;
+    }
+
+    .edit-btn {
+      background-color: #ffc107;
+      color: #000;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    /**************************************
+        DASHBOARD PAGE STYLES
+    **************************************/
+    .dashboard-title {
+      font-size: 2rem;
+      color: #1a73e8;
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: bold;
+      font-family: Arial, sans-serif;
+    }
+
+    .dashboard-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .dashboard-card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
+      min-width: 160px;
+      min-height: 78px;
+      padding: 18px 25px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      font-size: 18px;
+      flex: 1;
+      max-width: 180px;
+    }
+
+    .card-title {
+      font-weight: bold;
+      font-size: 1.12rem;
+      margin-bottom: 8px;
+      color: #222;
+    }
+    
+  .dashboard-card .card-info {
+    font-size: 1rem;
+    margin-left: -3px;
+    display: flex;
+    align-items: center;
+    gap:6px;
+  }
+
+    .circle-dot {
+      display: inline-block;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+
+    .dot-blue {
+      background: #2f82ec;
+    }
+
+    .dot-red {
+      background: #ff5577;
+    }
+
+    .dot-green {
+      background: #41bb5d;
+    }
+
+    .dot-yellow {
+      background: #ffe25a;
+      border: 1px solid #e1c900;
+    }
+
+     /* Side-by-side pie and icons area */
+    .dashboard-bottom-row {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 60px;
+      margin-top: 10px;
+    }
+
+    .dashboard-pie-wrap {
+      flex: 0 0 340px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      min-height: 320px;
+      background: transparent;
+    }
+
+    canvas#dashboard-pie {
+      background: #fff;
+      border-radius: 20%;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+      margin: 15px 0;
+    }
+
+  .dashboard-icons {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    justify-content: flex-start;
+    align-items: center;
+    height: 320px;
+  }
+
+  .dashboard-icon-item{
+    background: #fff;
+    border-radius: 40px;
+    height:62px;
+    width:550px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.09);
+    margin: 0 12px;
+    font-size: 2.0rem;
+    border: 1px solid #f1eeef;
+  }
+
+/* Main */
+    main {
+      background: #f5f6fa;
+      margin: 10px;
+      padding: 20px;
+      min-height: 400px;
+      border-radius: 6px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    /**************************************
+        SALES PAGE STYLES
+    **************************************/
+    .sales-container {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .sales-container h2 {
+      text-align: center;
+      font-size: 1.8rem;
+      color: #1a73e8;
+      margin-bottom: 20px;
+    }
+
+    .sales-forms {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: space-between;
+    }
+
+    .sales-box {
+      flex: 1 1 45%;
+      min-width: 280px;
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
+    }
+
+    .sales-box h3 {
+      margin-top: 0;
+      font-size: 1.2rem;
+      color: #444;
+    }
+
+    .sales-box input {
+      width: 95%;
+      padding: 8px;
+      margin: 5px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .sales-box button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      background: #28a745;
+      color: white;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .sales-box button:hover {
+      background: #1a73e8;
+    }
+
+    /**************************************
+        PURCHASE PAGE STYLES 
+    **************************************/
+    .purchase-container {
+      max-width: 900px;
+      margin: 30px auto;
+      background-color: #f9fbfd;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px -5px rgba(0, 0, 0, 0.2);
+      padding: 30px 40px;
+      color: #333;
+    }
+
+    .purchase-title {
+      text-align: center;
+      color: #00a0f0;
+      font-weight: bold;
+      font-size: 24px;
+      margin-bottom: 25px;
+      font-family: Arial, sans-serif;
+    }
+
+    .form-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 36px;
+      flex-wrap: nowrap;
+    }
+
+    .form-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-col.left label,
+    .form-col.right label {
+      font-weight: bold;
+      color: #003080;
+      margin-top: 12px;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+    }
+
+    .form-col.left label:first-child,
+    .form-col.right label:first-child {
+      margin-top: 0;
+      margin-bottom: 6px;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea {
+      margin-top: 4px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid #b0bedf;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+      resize: none;
+    }
+
+    textarea {
+      height: 60px;
+    }
+
+    .purchase-info {
+      margin-top: 20px;
+    }
+
+    .purchase-info label {
+      font-weight: 700;
+      color: #003080;
+      font-size: 15px;
+      margin-top: 12px;
+    }
+
+    .purchase-buttons {
+      margin-top: 30px;
+      display: flex;
+      gap: 20px;
+    }
+
+    .btn {
+      cursor: pointer;
+      font-weight: bold;
+      padding: 10px 25px;
+      border-radius: 10px;
+      color: white;
+      border: none;
+      font-size: 16px;
+      font-family: Arial, sans-serif;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn.add-btn {
+      background-color: #8cc63e;
+    }
+
+    .btn.add-btn:hover {
+      background-color: #blue;
+    }
+
+    .btn.display-btn {
+      background-color: #82da37;
+    }
+
+    .btn.display-btn:hover {
+      background-color: #6fc230;
+    }
+
+    th,
+    td {
+      text-align: center;
+      padding: 10px 8px;
+      border: 1px solid #c9d6ec;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+    }
+
+    th {
+      background-color: #0097f0;
+      color: white;
+      font-weight: 600;
+    }
+
+    .action-btn {
+      padding: 5px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      border: none;
+      margin: 0 2px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .edit-btn {
+      background-color: #ffc107;
+      color: #000;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    /**************************************
+        INVOICE PAGE STYLES
+    **************************************/
+  .invoice-container {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    background: transparent;
+  }
+  .invoice-form-panel {
+    background: #f9f9f9;
+    padding: 17px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    width: 330px;
+    min-width: 290px;
+    margin-top: 8px;
+  }
+  .invoice-form-panel label {
+    font-size: 13px;
+    color: #145389;
+    margin-top: 4px;
+    display: block;
+    margin-bottom: 2px;
+    font-weight: 500;
+  }
+  .invoice-form-panel input,
+  .invoice-form-panel select {
+    width: 100%;
+    margin-bottom: 8px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    border: 1px solid #b0bedf;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    margin-top: 2px;
+    box-sizing: border-box;
+  }
+  .invoice-form-panel hr {
+    margin: 12px 0 10px 0;
+    border: none;
+    border-top: 1px solid #ddd;
+  }
+  .invoice-form-panel h3, .invoice-form-panel h4 {
+    margin: 4px 0 8px 0;
+    color: #267b40;
+    text-align: left;
+    font-size: 16px;
+  }
+  .invoice-form-panel button {
+    margin-top: 2px;
+    margin-bottom: 6px;
+    font-size: 15px;
+    border: none;
+    border-radius: 4px;
+    background: #267b40;
+    color: white;
+    padding: 7px 0;
+    cursor: pointer;
+  }
+  .invoice-form-panel .invoice-btn {
+    width: 48%;
+    margin-bottom: 6px;
+    display: inline-block;
+    background: #1d8aad;
+  }
+  .invoice-form-panel .download-btn {
+    background: #145398;
+  }
+  .invoice-form-panel .email-btn {
+    width: 100%;
+    margin-top: 5px;
+    background: #266b36;
+  }
+  .invoice-form-panel .invoice-btn:active,
+  .invoice-form-panel .download-btn:active,
+  .invoice-form-panel .email-btn:active {
+    opacity: 0.85;
+  }
+
+  .invoice-preview-panel {
+    flex: 1;
+    background: white;
+    padding: 20px 26px 18px 24px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    min-height: 715px;
+    margin-top: 8px;
+    font-size: 14.5px;
+  }
+  .invoice-preview-panel table {
+    width: 100%;
+    margin-top: 10px;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .invoice-preview-panel th, .invoice-preview-panel td {
+    border: 1px solid #c8d1df;
+    padding: 5.5px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+  }
+  .invoice-preview-panel th {
+    background: #266b36;
+    color: white;
+    font-weight: 600;
+    font-size: 13px;
+  }
+  .invoice-preview-panel .section-break {
+    margin: 12px 0 10px 0;
+    height: 2px;
+    background: #e8ebed;
+    border: 0;
+  }
+  .invoice-preview-panel .customer-label {
+    width: 100%;
+    background: #21652f;
+    color: white;
+    text-align: left;
+    padding: 3px 9px;
+    margin: 10px 0 4px 0;
+    font-weight: 500;
+    font-size: 13px;
+    border-radius: 3px;
+  }
+  .invoice-preview-panel .signed-block {
+    text-align: right;
+    margin-top: 34px;
+    color: #1b3255;
+    font-size: 12.5px;
+  }
+  .invoice-preview-panel .summary-section {
+    margin-top: 10px;
+    margin-bottom: 9px;
+  }
+
+
+    /**************************************
+        SETTINGS PAGE STYLES
+    **************************************/
+
+    .settings-table {
+      width: 580px;
+      margin: 45px auto 0 auto;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 13px;
+      box-shadow: 0 1.5px 8px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+    .settings-table th, .settings-table td {
+      padding: 11px 16px;
+      text-align: center;
+      border: 1px solid #e6eaff;
+    }
+    .settings-table th { background: #007bff; color: white; }
+    .settings-table tr:first-child th { border-top: none; }
+    .settings-table tr:last-child td { border-bottom: none; }
+    .settings-table td input[type="text"] {
+      width: 100%;
+      padding: 6px 7px;
+      border-radius: 5px;
+      border: 1px solid #c9dafc;
+      font-size: 15px;
+    }
+    .settings-title {
+      text-align: center;
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #1091f9;
+      margin-top: 20px;
+    }
+    .settings-table button, select {
+      background: #ff725e;
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      padding: 6px 17px;
+      font-size: 14px;
+      cursor: pointer;
+      margin: 0 3px;
+    }
+    .settings-table button.switch {
+      background: #f6be06;
+      color: #333;
+    }
+    .settings-table select {
+      color: #484848;
+      background: #e3ebff;
+      padding: 7px 12px;
+      border-radius: 5px;
+      margin: 0;
+      border: 1px solid #aad;
+    }
+    .settings-table button[disabled] {
+      background: #d7d7d7;
+      color: #8b8b8b;
+      cursor: not-allowed;
+    }
+    @media(max-width:660px){
+      .settings-table { width:96vw; }
+    }
+    body.dark-mode{
+    background-color: #23272f ! important;
+    color: #f1f1f1;
+    }
+    .settings-table.dark-mode{
+     background-color: #2c2f36 ;
+     color: #ffffff;
+    }
+    .dark-mode.settings-table th {
+     background-color: #333e53 ;
+     color: #f1c85b;
+    }
+    .dark-mode.settings-table td {
+     background-color: #2c2f36 ;
+     color: #fff;
+    }
+    /**************************************
+        HELP&SUPPORT PAGE STYLES
+    **************************************/
+      @-webkit-keyframes example {
+   from {
+    top: -100px;
+    opacity: 0;
+   }
+   to {
+    top: 0px;
+    opacity: 1;
+   }
+  }
+  /* Add animation (Standard syntax) */
+ 
+  @keyframes example {
+   from {
+    top: -100px;
+    opacity: 0;
+   }
+   to {
+    top: 0px;
+    opacity: 1;
+   }
+  }
+  /* The modal's background */
+ 
+  .modal {
+   display: none;
+   position: fixed;
+   left: 0;
+   top: 0;
+   width: 100%;
+   height: 100%;
+   overflow: auto;
+   background-color: rgb(0, 0, 0);
+   background-color: rgba(0, 0, 0, 0.4);
+  }
+  .help-support-bg {
+  background: url('contact.jpg') no-repeat center center / cover;
+  color: white;
+  min-height: 400px;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+  /* Display the modal when targeted */
+ 
+  .modal:target {
+   display: table;
+   position: absolute;
+  }
+  /* The modal box */
+ 
+  .modal-dialog {
+   display: table-cell;
+   vertical-align: middle;
+  }
+  /* The modal's content */
+ 
+  .modal-dialog .modal-content {
+   margin: auto;
+   background-color: #f3f3f3;
+   position: relative;
+   padding: 0;
+   outline: 0;
+   border: 1px #777 solid;
+   text-align: justify;
+   width: 80%;
+   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+   /* Add animation */
+   -webkit-animation-name: example;
+   /* Chrome, Safari, Opera */
+   -webkit-animation-duration: 0.5s;
+   /* Chrome, Safari, Opera */
+   animation-name: example;
+   animation-duration: 0.5s;
+  }
+  /* The button used to close the modal */
+ 
+  .closebtn {
+   text-decoration: none;
+   float: right;
+   font-size: 35px;
+   font-weight: bold;
+   color: GREEN;
+  }
+ 
+  .closebtn:hover,
+  .closebtn:focus {
+   color: RED;
+   text-decoration: none;
+   cursor: pointer;
+  }
+ 
+  .container {
+   padding: 2px 16px;
+  }
+ 
+  header {
+   background-color: white ;
+   font-size: 25px;
+   color: blue;
+  }
+ 
+  footer {
+   background-color: #5cb85c;
+   font-size: 20px;
+   color: #5cb85c;
+  }
+  
+   nav {
+    padding: 1px 5px;
+    text-align: center;
+    margin:400;
+          
+   }
+   .container {
+    margin: 20px auto;
+   }
+
+	
+
+
+    /**************************************
+          DEFAULT HOME PAGE STYLES
+    **************************************/
+
+     body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #eef3f9;
+    }
+    
+    .container {
+      width: 90%;
+      margin: 10px auto;
+      padding: 10px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      color: #1da1f2;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: #f05a28;
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
+
+    .card:hover {
+      transform: translateY(-8px) scale(1.05);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      opacity: 0.95;
+    }
+
+    .card h2 {
+      font-size: 24px;
+      margin: 5px 0;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    /* Custom colors */
+    .orange {background:#f37024;}
+    .pink   {background:#d63384;}
+    .purple {background:#7c4dff;}
+    .yellow {background:#fbc02d; color:#333;}
+    .blue   {background:#2196f3;}
+    .red    {background:#e53935;}
+    .green  {background:#43a047;}
+    .teal   {background:#2bbbad;}
+    .darkorange {background:#ff8f00;}
+    .darkblue {background:#1976d2;}
+    .brown  {background:#8d6e63;}
+
+    /* Bar Chart */
+    .chart {
+      display: flex;
+      justify-content: space-around;
+      align-items: end;
+      height: 200px;
+      border-left: 4px solid #ccc;
+      border-bottom: 4px solid #ccc;
+      padding: 10px;
+    }
+    .bar {
+      width: 50px;
+      border-radius: 5px 5px 0 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+    .bar:hover {
+      opacity: 0.8;
+      transform: scaleY(1.1);
+    }
+    .bar1 {height: 80px; background:#2196f3;}
+    .bar2 {height: 120px; background:#e53935;}
+    .bar3 {height: 100px; background:#fbc02d; color:#333;}
+    .bar4 {height: 160px; background:#8bc34a;}
+    .bar5 {height: 180px; background:#26a69a;}
+
+
+
+
+
+    /**************************************
+        FOOTER
+    **************************************/
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .social-icons a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    .clr_cls {
+      background-color: orange;
+      padding: 30px 0;
+    }
+  </style>
+</head>
+
+<body>
+ 
+  <!-- Header -->
+  <header>
+    <h1 id="app-title">
+      <img src="nihalgupta.png" alt="logo" class="logo">
+      <img src="SMA.png" alt="logo" class="logo">
+    </h1>
+  </header>
+
+  <!-- Search and Nav -->
+  <section class="search-nav">
+    <div class="search-bar">
+      <input type="text" id="search" placeholder="Search...">
+      <button onclick="alert('Abhi Camera par kaam kar na baaki hai!!')">
+        <img src="camera.png" alt="camera">
+      </button>
+    </div>
+    
+    	<nav>
+      		<button onclick="loadPage('Home')">Home</button>
+      		<button onclick="loadPage('Items')">Items</button>
+      		<button onclick="loadPage('Dashboard')">Dashboard</button>
+      		<button onclick="loadPage('Sales')">Sales</button>
+      		<button onclick="loadPage('Purchase')">Purchase</button>
+      		<button onclick="loadPage('Invoice')">Invoice</button>
+      		<button onclick="loadPage('Settings')">Settings</button>
+		<button onclick="loadPage('Help & Support')">Help & Support</button>
+   	</nav>
+   
+  </section>
+
+ 
+<!-- Main Content -->
+  <main id="content">
+	<body>
+	<!-- Slideshow container -->
+		<div class="slideshow-container" id="slideshow-container">
+  		<div class="slide fade"><img src="1H.jpg" alt="Slide 1"></div>
+  		<div class="slide fade"><img src="2H.jpg" alt="Slide 2"></div>
+  		<div class="slide fade"><img src="3H.jpg" alt="Slide 3"></div>
+  		<div class="slide fade"><img src="4H.jpg" alt="Slide 4"></div>
+
+  		<a class="prev" onclick="changeSlide(-1)">&#10094;</a>
+  		<a class="next" onclick="changeSlide(1)">&#10095;</a>
+		</div>
+		<!-- Dots -->
+		<div style="text-align:center; margin-top: 10px;">
+  		<span class="dot" onclick="goToSlide(1)"></span>
+  		<span class="dot" onclick="goToSlide(2)"></span>
+  		<span class="dot" onclick="goToSlide(3)"></span>
+  		<span class="dot" onclick="goToSlide(4)"></span>
+		</div>
+	<script>
+		let currentSlideIndex = 1;
+		function showSlide(n) {
+  		const slides = document.getElementsByClassName("slide");
+  		const dots = document.getElementsByClassName("dot");
+  			if (n > slides.length) currentSlideIndex = 1;
+  			if (n < 1) currentSlideIndex = slides.length;
+  				for (const slide of slides) {
+    					slide.style.display = "none";}
+  				for (const dot of dots) {
+    					dot.className = dot.className.replace(" active", "");}
+  					slides[currentSlideIndex - 1].style.display = "block";
+  					dots[currentSlideIndex - 1].className += " active";}
+		function changeSlide(n) {
+  		showSlide(currentSlideIndex += n);}
+		function goToSlide(n) {
+  		showSlide(currentSlideIndex = n);}
+		// Initial display of slide 1
+		document.addEventListener("DOMContentLoaded", () => {
+  		showSlide(currentSlideIndex);});
+		// Function to simulate Home button click functionality
+		function openHome() {
+  		currentSlideIndex = 1;
+  		showSlide(currentSlideIndex);}
+	</script>
+   </body>
+</main>
+
+
+
+
+
+
+<html>
+<head>
+</head>
+<body> 
+   <center>
+     <img src="img1.jpg" width="1000" height="500">
+     <img src="img2.jpg" width="1000" height="400">
+  </center>
+</body>
+</html>
+
+  <!-- Footer  Section-->
+  <footer>
+        <div class="footer-content">
+            <div class="info">
+                <p>◼ ◼ ◼ ◼ ◼</p>
+            </div>
+     <div class="info">
+                <p><h2>Shop Management</h2></p>
+                <p><i>Thank you for visiting us!</i></p>
+                <p><u>Contact Us</u></p>
+                <p>📧<b>Email:</b><a href="nihalgupta.iitp@gmail.com">nihalgupta.iitp@gmail.com</a></p>
+                <p>📞<b>Phone:</b> +91 8052009139</p>
+            </div    
+      </div>
+<html>
+<head>
+<style>
+  .clr_cls{
+        background-color:orange;
+        padding: 30px 0;
+  }
+</style>
+</head>
+<body>
+  <div class ="clr_cls">
+   <center>
+   <div class="legal">
+                <p>◼ ◼ ◼ ◼ ◼</p>
+                <p><a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a></p>
+                <p>&copy; 2025 Shop Management. All Rights Reserved.By <b>@Nihalgupta</b></p>
+        </div>
+    <div class="social-icons">
+                <a href="https://www.facebook.com/share/1A879Szfuu/"  target="_blank"><img src="F.png" alt="Facebook" width="30" height="30"></a>
+                <a href="https://wa.me/+918052009139" target="_blank"><img src="W.png" alt="WhatsApp"width="30" height="30"></a>
+                <a href="https://www.instagram.com/nihalguptaofficial_?igsh=MWV3aG9tc3duam45cQ==" target="_blank"><img src="I.png" alt="Instagram" width="30" height="30"></a>
+         </div>
+        </center>
+   </div>
+</body>
+</html>
+
+
+
+
+  <script>
+    
+    let editIndex = null;
+    let salesEditRow = null;
+    let purchaseEditRow = null;
+    let settingsData = {
+       generalTranscript: true,
+       salesManagement: true,
+       invoicePrintText: "Thank you for shopp",
+       gstReminder: false,
+       theme: 'Light',
+       stockLowAlert: false,
+       dataBackup: 'Automatic',
+       notifications: true,
+       userRole: 'Manager'};
+
+
+
+
+    // Function to switch pages
+    function loadPage(page) {
+      const content = document.getElementById("content");
+	if (page === "Home") {
+        content.innerHTML = `
+            <center>
+  		<marquee behavior ="alternate">
+            		<h1 style="color: blue;"><u><i><b>Welcome to Home Page</b></i></u></h1>
+       		</marquee>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+    <h1>📊 Product Status</h1>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid">
+      <div class="card orange"><h2>12</h2><p>Total Products</p></div>
+      <div class="card pink"><h2>2</h2><p>Low Stock Products</p></div>
+      <div class="card purple"><h2>1</h2><p>Out of Stock Products</p></div>
+      <div class="card yellow"><h2>5</h2><p>Zero Stock Products</p></div>
+      <div class="card blue"><h2>20</h2><p>Products</p></div>
+      <div class="card red"><h2>0</h2><p>Pending Orders</p></div>
+      <div class="card green"><h2>4</h2><p>Completed Orders</p></div>
+      <div class="card teal"><h2>3</h2><p>Completed Shipping</p></div>
+      <div class="card darkorange"><h2>1</h2><p>Pending Shippings</p></div>
+      <div class="card brown"><h2>11</h2><p>Active Customers</p></div>
+      <div class="card yellow"><h2>6</h2><p>Subscribers</p></div>
+      <div class="card darkblue"><h2>4</h2><p>Available Shippings</p></div>
+    </div>
+
+    <!-- Bar Chart -->
+    <div class="chart">
+      <div class="bar bar1">20</div>
+      <div class="bar bar2">40</div>
+      <div class="bar bar3">30</div>
+      <div class="bar bar4">50</div>
+      <div class="bar bar5">60</div>
+    </div>
+  </div>
+
+            </center>
+         `;
+     }      
+      else if (page === "Items") {
+        content.innerHTML = `
+          <div class="manage-items">
+            <h2>Manage Items</h2>
+            <input type="text" id="itemName" placeholder="Enter item name">
+            <input type="number" id="itemQuantity" placeholder="Enter item quantity">
+            <input type="number" id="itemPrice" placeholder="Enter price">
+            <button onclick="addItem()" id="addBtn">Add Item</button>
+            <table>
+              <thead>
+                <tr>
+                  <th>Item Name</th>
+                  <th>Item Quantity</th>
+                  <th>Price ($)</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="itemTable"></tbody>
+            </table>
+          </div>`;
+      }
+
+      else if (page === "Dashboard") {
+        content.innerHTML = `
+        
+          <div class="dashboard-title">Dashboard</div>
+          <div class="dashboard-cards">
+            <div class="dashboard-card">
+              <div class="card-title">Employees</div>
+              <div class="card-info"><span class="circle-dot dot-blue"></span>30 Active Users</div>
+            </div>
+            <div class="dashboard-card">
+              <div class="card-title">Sales</div>
+              <div class="card-info"><span class="circle-dot dot-red"></span>&#8377;27,000</div>
+            </div>
+            <div class="dashboard-card">
+              <div class="card-title">Performance</div>
+              <div class="card-info"><span class="circle-dot dot-green"></span>Good</div>
+            </div>
+            <div class="dashboard-card">
+              <div class="card-title">Order Tracking</div>
+              <div class="card-info"><span class="circle-dot dot-yellow"></span>201</div>
+            </div>
+          </div>
+          <div class="dashboard-bottom-row">
+            <div class="dashboard-pie-wrap">
+              <canvas id="dashboard-pie" width="290" height="290"></canvas>
+            </div>
+            <div class="dashboard-icons">
+              <div class="dashboard-icon-item"><a href="1.jpg">Real-Time Analytics</a></div>
+              <div class="dashboard-icon-item"><a href="2.jpg">Reporting & Visualization</a></div>
+              <div class="dashboard-icon-item"><a href="3.png">Customizability & Scalability</a></div>
+              <div class="dashboard-icon-item"><a href="4.png">Support & Training</a></div>
+            </div>
+          </div>
+          `;
+        setTimeout(() => {
+          const ctx = document.getElementById("dashboard-pie").getContext("2d");
+          drawPieChart(ctx, [0.25, 0.33, 0.18, 0.24], ['#2f82ec', '#ff5577', '#ffe25a', '#41bb5d']);
+        }, 10);
+      }
+
+      else if (page === "Sales") {
+        content.innerHTML = `
+          <div class="sales-container">
+            <h2>Sales Management System</h2>
+            <div class="sales-forms">
+              ${createSalesBox("Sales Invoice")}
+              ${createSalesBox("Sales Order")}
+              ${createSalesBox("Payment In")}
+              ${createSalesBox("Delivered To")}
+              ${createSalesBox("Sales Return")}
+            </div>
+            <h3 style="margin-top:30px;">Sales Records</h3>
+            <table>
+              <thead>
+                <tr><th>Type</th><th>Customer Name</th><th>Phone</th><th>Actions</th></tr>
+              </thead>
+              <tbody id="salesTable"></tbody>
+            </table>
+          </div>`;
+     } else if (page === "Purchase") {
+        content.innerHTML = `
+          <div class="purchase-container">
+            <div class="purchase-title">Product Management System</div>
+            <form id="purchaseForm" onsubmit="addPurchaseRecord(event)">
+              <div class="form-row">
+                <div class="form-col left">
+                  <label>Add New Product</label>
+                  <label for="prodName">Product Name</label>
+                  <input type="text" id="prodName" />
+                  <label for="prodType">Type</label>
+                  <input type="text" id="prodType" />
+                  <label for="prodQuantity">Quantity</label>
+                  <input type="number" id="prodQuantity" />
+                  <label for="prodTax">Tax</label>
+                  <input type="number" id="prodTax" />
+                  <label for="prodDesc">Description</label>
+                  <textarea id="prodDesc"></textarea>
+                  <label for="prodAmount">Amount</label>
+                  <input type="number" id="prodAmount" />
+                </div>
+
+                <div class="form-col right">
+                  <label>Sales Information</label>
+                  <label for="sellPrice">Selling Price</label>
+                  <input type="number" id="sellPrice" />
+                  <label for="salesAmount">Amount</label>
+                  <input type="number" id="salesAmount" />
+                  <label for="salesGST">GST</label>
+                  <input type="number" id="salesGST" />
+                  <div class="purchase-info">
+                    <label>Purchase Information</label>
+                       <div>
+                    	<label for="purchaseDiscount">Discount</label>
+                    	<input type="number" id="purchaseDiscount" />
+                         <br>
+                    	<label for="purchaseAmount">Amount</label>
+                    	<input type="number" id="purchaseAmount" />
+		      </div>
+                  </div>
+                  <div class="purchase-buttons">
+                    <button type="submit" class="btn add-btn">Add</button>
+                    <button type="button" class="btn display-btn" onclick="displayPurchases()">Display</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>Product Name</th>
+                  <th>Type</th>
+                  <th>Quantity</th>
+                  <th>Tax</th>
+                  <th>Description</th>
+                  <th>Amount</th>
+                  <th>Selling Price</th>
+                  <th>Sales Amount</th>
+                  <th>GST</th>
+                  <th>Discount</th>
+                  <th>Purchase Amount</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="purchaseTable"></tbody>
+            </table>
+          </div>`;
+      }
+    else if (page === "Invoice") {
+      content.innerHTML = `
+        <h2 style="text-align:center;font-size:2.5rem;color:#28b6f6;font-family:sans-serif;margin:0 0 18px 0;">Invoice Generator</h2>
+        <div class="invoice-container">
+          <!-- Left panel: Form -->
+          <div class="invoice-form-panel">
+            <h3>Enter Invoice Details</h3>
+            <label>Company Name</label>
+            <input type="text" id="invCompanyName" placeholder="">
+            <label>Address</label>
+            <input type="text" id="invCompanyAddress" placeholder="">
+            <label>Phone</label>
+            <input type="text" id="invCompanyPhone" placeholder="">
+            <label>Email</label>
+            <input type="email" id="invCompanyEmail" placeholder="">
+            <label>Customer Name</label>
+            <input type="text" id="invCustomerName" placeholder="">
+            <label>Customer Address</label>
+            <input type="text" id="invCustomerAddress" placeholder="">
+            <label>Invoice No</label>
+            <input type="text" id="invInvoiceNo" placeholder="">
+            <label>Date</label>
+            <input type="date" id="invInvoiceDate" placeholder="">
+            <hr>
+            <h4>Add Item</h4>
+            <label>Item Name</label>
+            <input type="text" id="invItemName" placeholder="">
+            <label>HSN/SAC</label>
+            <input type="text" id="invHSN" placeholder="">
+            <label>City</label>
+            <input type="text" id="invCity" placeholder="">
+            <label>Quantity</label>
+            <input type="number" id="invQuantity" placeholder="">
+            <label>Price/Unit</label>
+            <input type="number" id="invPrice" placeholder="">
+            <label>Discount</label>
+            <input type="number" id="invDiscount" placeholder="">
+            <button onclick="addInvoiceItem()">Add Item</button>
+            <hr>
+            <h4>GST & Payment</h4>
+            <label>GST (%)</label>
+            <input type="number" id="invGST" placeholder="">
+            <label>Payment Status</label>
+            <select id="invPaymentStatus">
+                <option value="Pending">Pending</option>
+                <option value="Paid">Paid</option>
+            </select>
+            <label>Payment Date</label>
+            <input type="date" id="invPaymentDate" placeholder="">
+            <hr>
+            <h4>Bank Details</h4>
+            <label>Bank Name</label>
+            <input type="text" id="invBankName" placeholder="">
+            <label>Account No</label>
+            <input type="text" id="invBankAccount" placeholder="">
+            <label>IFSC Code</label>
+            <input type="text" id="invIFSC" placeholder="">
+            <label>Account Holder</label>
+            <input type="text" id="invAccountHolder" placeholder="">
+            <button class="invoice-btn" onclick="generateInvoice()">Generate Invoice</button>
+            <button class="invoice-btn download-btn" onclick="downloadInvoice()">Download Invoice</button>
+            <button class="email-btn" onclick="sendInvoiceEmail()">Send to Email</button>
+          </div>
+          <!-- Right panel: Preview -->
+          <div id="invoicePreview" class="invoice-preview-panel" style="min-width:420px;">
+            <span style="color:#8ea6b7;"><em>Invoice preview will appear here...</em></span>
+          </div>
+        </div>
+      `;
+      window.invoiceItems = [];
+      setTimeout(() => generateInvoice(true), 80);
+    }
+   
+    else if (page === "Settings") {
+    content.innerHTML = `
+    <div class="settings-title">Settings</div>
+    <table class="settings-table">
+      <tr>
+        <th>Feature</th>
+        <th>Status / Option</th>
+        <th>Action</th>
+      </tr>
+      <tr>
+        <td>General Transcript</td>
+        <td id="st-generalTranscript">${settingsData.generalTranscript ? "Enabled" : "Disabled"}</td>
+        <td><button onclick="toggleSetting('generalTranscript')">Toggle</button></td>
+      </tr>
+      <tr>
+        <td>Sales Management</td>
+        <td id="st-salesManagement">${settingsData.salesManagement ? "Active" : "Inactive"}</td>
+        <td><button onclick="toggleSetting('salesManagement')">Toggle</button></td>
+      </tr>
+      <tr>
+        <td>Invoice Print Text</td>
+        <td><input type="text" id="st-invoicePrintText" value="${settingsData.invoicePrintText}" style="width:165px;"></td>
+        <td><button onclick="editSetting('invoicePrintText')">Editable</button></td>
+      </tr>
+      <tr>
+        <td>GST Payment Reminder</td>
+        <td id="st-gstReminder">${settingsData.gstReminder ? "On" : "Off"}</td>
+        <td><button onclick="toggleSetting('gstReminder')">Toggle</button></td>
+      </tr>
+      <tr>
+        <td>Theme</td>
+        <td id="st-theme">${settingsData.theme} Mode</td>
+        <td><button class="switch" onclick="switchTheme()">Switch Mode</button></td>
+      </tr>
+      <tr>
+        <td>Stock Low Alert</td>
+        <td id="st-stockLowAlert">${settingsData.stockLowAlert ? "On" : "Off"}</td>
+        <td><button onclick="toggleSetting('stockLowAlert')">Toggle</button></td>
+      </tr>
+      <tr>
+        <td>Data Backup</td>
+        <td>
+          <select id="st-dataBackup" onchange="editSetting('dataBackup')">
+            <option value="Automatic" ${settingsData.dataBackup=="Automatic"?"selected":""}>Automatic</option>
+            <option value="Manual" ${settingsData.dataBackup=="Manual"?"selected":""}>Manual</option>
+            <option value="Off" ${settingsData.dataBackup=="Off"?"selected":""}>Off</option>
+          </select>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Notifications</td>
+        <td id="st-notifications">${settingsData.notifications ? "Enabled" : "Disabled"}</td>
+        <td><button onclick="toggleSetting('notifications')">Toggle</button></td>
+      </tr>
+      <tr>
+        <td>User Role</td>
+        <td>
+          <select id="st-userRole" onchange="editSetting('userRole')">
+            <option value="Manager" ${settingsData.userRole=="Manager"?"selected":""}>Manager</option>
+            <option value="Cashier" ${settingsData.userRole=="Cashier"?"selected":""}>Cashier</option>
+            <option value="Staff" ${settingsData.userRole=="Staff"?"selected":""}>Staff</option>
+          </select>
+        </td>
+        <td></td>
+      </tr>
+    </table>
+    `;
+  }
+
+   else if (page === "Help & Support") {
+      content.innerHTML = `
+       <div style="
+      		padding: 40px; 
+      		border-radius: 12px; 
+      		max-width: 1200px;
+      		margin: 30px auto; 
+      		box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      		font-family: Arial, sans-serif;
+      		color: white;
+      		background: url('contact.jpg') no-repeat center center / cover;
+      		min-height: 300px;">
+     <nav>
+       <button type="button" onclick="openMeinMenu()";><a href="#id01"><p style="color: white;"><i><b>Give me a Feedback</b></i>😊</p></a></button>
+     </nav>
+</div>
+<div id="id01" class="modal">
+  <div class="modal-dialog">
+   <div class="modal-content">
+    <header class="container">
+     <a href="#" class="closebtn">x</a>
+     <h2>Contact Us</h2>
+    </header>
+    <div class="container">
+     <p>📧<b>Email:</b><a href="#">nihalgupta.iitp@gmail.com</a></p>
+     <p>📞<b>Phone:</b> +91 8052009139</p>
+    </div>
+    <footer class="container">
+     <p style ="color: Black;"><i>Thank you for your feedback</i></p>
+    </footer>
+   </div>
+  </div>
+</div>
+ `;
+}
+}
+
+     /******************** HOME FUNCTIONS ********************/
+           let SlideIndex = 1;
+     let slideTimer;
+
+function showSlide(n) {
+  const slides = document.getElementsByClassName("slide");
+  const dots = document.getElementsByClassName("dot");
+
+  if (n > slides.length) currentSlideIndex = 1;
+  if (n < 1) currentSlideIndex = slides.length;
+
+  for (const slide of slides) {
+    slide.style.display = "none";
+  }
+  for (const dot of dots) {
+    dot.className = dot.className.replace(" active", "");
+  }
+
+  slides[currentSlideIndex - 1].style.display = "block";
+  dots[currentSlideIndex - 1].className += " active";
+}
+
+function changeSlide(n) {
+  showSlide(currentSlideIndex += n);
+}
+
+function goToSlide(n) {
+  showSlide(currentSlideIndex = n);
+}
+
+// Initial display of slide 1
+document.addEventListener("DOMContentLoaded", () => {
+  showSlide(currentSlideIndex);
+});
+
+// Function to simulate Home button click functionality
+function openHome() {
+  currentSlideIndex = 1;
+  showSlide(currentSlideIndex);
+}
+
+
+    
+     /******************** ITEMS FUNCTIONS ********************/
+    function addItem() {
+      const name = document.getElementById('itemName').value.trim();
+      const quantity = document.getElementById('itemQuantity').value.trim();
+      const price = document.getElementById('itemPrice').value.trim();
+
+      if (!name || !quantity || !price) {
+        alert("Please fill in all fields!");
+        return;
+      }
+
+      const table = document.getElementById('itemTable');
+      if (editIndex === null) {
+        const row = table.insertRow();
+        row.innerHTML = `
+          <td>${name}</td>
+          <td>${quantity}</td>
+          <td>$${price}</td>
+          <td><button class="action-btn edit-btn" onclick="editItem(this)">Edit</button>
+          <button class="action-btn delete-btn" onclick="deleteItem(this)">Delete</button></td>`;
+      } else {
+        const row = table.rows[editIndex];
+        row.cells[0].innerText = name;
+        row.cells[1].innerText = quantity;
+        row.cells[2].innerText = `$${price}`;
+        editIndex = null;
+        document.getElementById('addBtn').innerText = "Add Item";
+      }
+      document.getElementById('itemName').value = '';
+      document.getElementById('itemQuantity').value = '';
+      document.getElementById('itemPrice').value = '';
+    }
+    function deleteItem(btn) { btn.closest("tr").remove(); }
+    function editItem(btn) {
+      const row = btn.closest("tr");
+      editIndex = row.rowIndex - 1;
+      document.getElementById('itemName').value = row.cells[0].innerText;
+      document.getElementById('itemQuantity').value = row.cells[1].innerText;
+      document.getElementById('itemPrice').value = row.cells[2].innerText.replace('$', '');
+      document.getElementById('addBtn').innerText = "Update Item";
+    }
+
+    /******************** SALES FUNCTIONS ********************/
+    function createSalesBox(type) {
+      const idPrefix = type.replace(/\s/g, '');
+      return `
+        <div class="sales-box">
+          <h3>Add ${type}</h3>
+          <input type="text" id="${idPrefix}Name" placeholder="Customer Name">
+          <input type="text" id="${idPrefix}Phone" placeholder="Phone Number">
+          <button onclick="addSalesRecord('${type}')">Add Details</button>
+        </div>`;
+    }
+    function addSalesRecord(type) {
+      const nameField = document.getElementById(type.replace(/\s/g, '') + "Name");
+      const phoneField = document.getElementById(type.replace(/\s/g, '') + "Phone");
+      const name = nameField.value.trim();
+      const phone = phoneField.value.trim();
+      if (!name || !phone) { alert("Please fill both fields"); return; }
+      const table = document.getElementById("salesTable");
+      if (salesEditRow) {
+        salesEditRow.cells[0].innerText = type;
+        salesEditRow.cells[1].innerText = name;
+        salesEditRow.cells[2].innerText = phone;
+        salesEditRow = null;
+      } else {
+        const row = table.insertRow();
+        row.innerHTML = `
+          <td>${type}</td><td>${name}</td><td>${phone}</td>
+          <td><button class="action-btn edit-btn" onclick="editSalesRecord(this)">Edit</button>
+          <button class="action-btn delete-btn" onclick="deleteSalesRecord(this)">Delete</button></td>`;
+      }
+      nameField.value = ""; phoneField.value = "";
+    }
+    function editSalesRecord(btn) {
+      salesEditRow = btn.closest("tr");
+      const type = salesEditRow.cells[0].innerText;
+      document.getElementById(type.replace(/\s/g, '') + "Name").value = salesEditRow.cells[1].innerText;
+      document.getElementById(type.replace(/\s/g, '') + "Phone").value = salesEditRow.cells[2].innerText;
+    }
+    function deleteSalesRecord(btn) { btn.closest("tr").remove(); salesEditRow = null; }
+    
+    /******************** PURCHASE FUNCTIONS ********************/
+    function addPurchaseRecord(event) {
+      event.preventDefault();
+
+      const fields = [
+        "prodName",
+        "prodType",
+        "prodQuantity",
+        "prodTax",
+        "prodDesc",
+        "prodAmount",
+        "sellPrice",
+        "salesAmount",
+        "salesGST",
+        "purchaseDiscount",
+        "purchaseAmount",
+      ];
+
+      const data = fields.map((id) => document.getElementById(id).value.trim());
+
+      if (!data[0] || !data[2] || !data[5] || !data[10]) {
+        alert("Please fill all required fields (Product Name, Quantity, Amount, Purchase Amount)!");
+        return;
+      }
+
+      const table = document.getElementById("purchaseTable");
+
+      if (purchaseEditRow) {
+        fields.forEach((id, i) => (purchaseEditRow.cells[i].innerText = data[i]));
+        purchaseEditRow = null;
+      } else {
+        const row = table.insertRow();
+        row.innerHTML = `
+          <td>${data[0]}</td>
+          <td>${data[1]}</td>
+          <td>${data[2]}</td>
+          <td>${data[3]}</td>
+          <td>${data[4]}</td>
+          <td>${data[5]}</td>
+          <td>${data[6]}</td>
+          <td>${data[7]}</td>
+          <td>${data[8]}</td>
+          <td>${data[9]}</td>
+          <td>${data[10]}</td>
+          <td>
+            <button class="action-btn edit-btn" onclick="editPurchase(this)">Edit</button>
+            <button class="action-btn delete-btn" onclick="deletePurchase(this)">Delete</button>
+          </td>
+        `;
+      }
+
+      fields.forEach((id) => (document.getElementById(id).value = ""));
+    }
+    function editPurchase(button) {
+      purchaseEditRow = button.closest("tr");
+      const fields = [
+        "prodName",
+        "prodType",
+        "prodQuantity",
+        "prodTax",
+        "prodDesc",
+        "prodAmount",
+        "sellPrice",
+        "salesAmount",
+        "salesGST",
+        "purchaseDiscount",
+        "purchaseAmount",
+      ];
+      fields.forEach((id, i) => (document.getElementById(id).value = purchaseEditRow.cells[i].innerText));
+    }
+    function deletePurchase(button) {
+      button.closest("tr").remove();
+      purchaseEditRow = null;
+    }
+    function displayPurchases() {
+      const table = document.getElementById("purchaseTable");
+      if (!table.rows.length) {
+        alert("No purchase records found!");
+      }
+    }
+
+
+    /******************** PIE CHART ********************/
+    function drawPieChart(ctx, data, colors) {
+      let total = data.reduce((a, b) => a + b, 0);
+      let start = 0;
+      for (let i = 0; i < data.length; i++) {
+        let slice = data[i] / total * 2 * Math.PI;
+        ctx.beginPath();
+        ctx.moveTo(145, 145);
+        ctx.arc(145, 145, 120, start, start + slice);
+        ctx.closePath();
+        ctx.fillStyle = colors[i];
+        ctx.fill();
+        start += slice;
+      }
+    }
+    
+    /******************** INVOICE GENERATOR FUNCTIONS ********************/
+    
+
+       function addInvoiceItem() {
+    const name = document.getElementById('invItemName').value || '';
+    const hsn = document.getElementById('invHSN').value || '';
+    const city = document.getElementById('invCity').value || '';
+    const quantity = +document.getElementById('invQuantity').value || 1;
+    const price = +document.getElementById('invPrice').value || 0;
+    const discount = +document.getElementById('invDiscount').value || 0;
+    if (!name) { alert("Please enter item name!"); return; }
+    window.invoiceItems.push({ name, hsn, city, quantity, price, discount, amount: ((quantity * price) - discount) });
+    document.getElementById('invItemName').value = '';
+    document.getElementById('invHSN').value = '';
+    document.getElementById('invCity').value = '';
+    document.getElementById('invQuantity').value = '';
+    document.getElementById('invPrice').value = '';
+    document.getElementById('invDiscount').value = '';
+    generateInvoice(true);
+  }
+  function getInvoiceDetails() {
+    return {
+      company: {
+        name: document.getElementById('invCompanyName').value,
+        address: document.getElementById('invCompanyAddress').value,
+        phone: document.getElementById('invCompanyPhone').value,
+        email: document.getElementById('invCompanyEmail').value
+      },
+      customer: {
+        name: document.getElementById('invCustomerName').value,
+        address: document.getElementById('invCustomerAddress').value
+      },
+      invoiceNo: document.getElementById('invInvoiceNo').value,
+      invoiceDate: document.getElementById('invInvoiceDate').value,
+      items: window.invoiceItems,
+      gst: +document.getElementById('invGST').value || 0,
+      payment: {
+        status: document.getElementById('invPaymentStatus').value,
+        date: document.getElementById('invPaymentDate').value
+      },
+      bank: {
+        name: document.getElementById('invBankName').value,
+        account: document.getElementById('invBankAccount').value,
+        ifsc: document.getElementById('invIFSC').value,
+        holder: document.getElementById('invAccountHolder').value
+      }
+    };
+  }
+  function generateInvoice(auto) {
+    if (!document.getElementById('invoicePreview')) return;
+    const d = getInvoiceDetails();
+    let subtotal = d.items.reduce((s, it) => s + it.amount, 0);
+    let gstAmt = subtotal * d.gst / 100;
+    let total = subtotal + gstAmt;
+    let rows = d.items.map((it, i) => 
+      `<tr>
+        <td>${i+1}</td>
+        <td>${it.name}</td>
+        <td>${it.hsn}</td>
+        <td>${it.quantity}</td>
+        <td>${it.price}</td>
+        <td>${it.discount}</td>
+        <td>${it.amount}</td>
+      </tr>`
+    ).join('');
+    document.getElementById('invoicePreview').innerHTML = `
+      <div style="margin-bottom:7px;"><b>Company Name:</b> ${d.company.name || ''}</div>
+      <div><b>Address:</b> ${d.company.address || ''}</div>
+      <div><b>Phone:</b> ${d.company.phone || ''}</div>
+      <div><b>Email:</b> ${d.company.email || ''}</div>
+      <div class="section-break"></div>
+      <div class="customer-label">Customer Details:</div>
+      <div style="margin-bottom:3px;"><b>Bill To:</b> ${d.customer.name || ''}</div>
+      <div><b>Address:</b> ${d.customer.address || ''}</div>
+      <div style="margin-top:3px;"><b>Invoice No:</b> ${d.invoiceNo || ''} &nbsp; <b>Date:</b> ${d.invoiceDate || ''}</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Sl No</th>
+            <th>Item</th>
+            <th>HSN/SAC</th>
+            <th>Quantity</th>
+            <th>Price/Unit</th>
+            <th>Discount</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows}
+        </tbody>
+      </table>
+      <div class="summary-section">
+        <div>Subtotal: <b>&#8377;${subtotal.toFixed(2)}</b></div>
+        <div>GST (${d.gst}%): <b>&#8377;${gstAmt.toFixed(2)}</b></div>
+        <div><b>Total: &#8377;${total.toFixed(2)}</b></div>
+      </div>
+      <div>
+        <div><b>Payment Status:</b> ${d.payment.status || ''}</div>
+        <div><b>Payment Date:</b> ${d.payment.date || ''}</div>
+        <div><b>Bank:</b> ${d.bank.name || ''}</div>
+        <div><b>Account:</b> ${d.bank.account || ''}</div>
+        <div><b>IFSC:</b> ${d.bank.ifsc || ''}</div>
+        <div><b>Holder:</b> ${d.bank.holder || ''}</div>
+      </div>
+      <div class="signed-block">Digitally signed by NG</div>
+    `;
+  }
+  function downloadInvoice() {
+    generateInvoice();
+    const el = document.getElementById('invoicePreview');
+    const win = window.open('', '', 'width=900,height=900');
+    win.document.write('<html><head><title>Invoice</title></head><body style="font-family:Arial,sans-serif;">');
+    win.document.write(el.innerHTML);
+    win.document.write('</body></html>');
+    win.document.close();
+    setTimeout(() => win.print(), 350);
+  }
+  function sendInvoiceEmail() {
+    generateInvoice();
+    const preview = document.getElementById('invoicePreview').innerText || '';
+    const subj = encodeURIComponent('Invoice from Shop Management');
+    const body = encodeURIComponent(preview.trim());
+    const email = document.getElementById('invCompanyEmail').value || 'recipient@example.com';
+    window.open(`mailto:${email}?subject=${subj}&body=${body}`);
+  }
+
+  /******************** SETTING PAGE FUNCTIONS ********************/
+  function toggleSetting(key) {
+  if (key === 'generalTranscript' || key === 'salesManagement' ||
+      key === 'gstReminder' || key === 'stockLowAlert' || key === 'notifications') {
+    settingsData[key] = !settingsData[key];
+    let el = document.getElementById('st-' + key);
+    if(key === 'generalTranscript' || key === 'notifications')
+      el.innerText = settingsData[key] ? 'Enabled' : 'Disabled';
+    else if(key === 'salesManagement')
+      el.innerText = settingsData[key] ? 'Active' : 'Inactive';
+    else
+      el.innerText = settingsData[key] ? 'On' : 'Off';
+  }
+}
+
+function editSetting(key) {
+  if(key === 'invoicePrintText') {
+    const val = document.getElementById('st-invoicePrintText').value;
+    settingsData.invoicePrintText = val;
+    alert('Invoice Print Text updated!');
+  } else if(key === 'dataBackup') {
+    const val = document.getElementById('st-dataBackup').value;
+    settingsData.dataBackup = val;
+  } else if(key === 'userRole') {
+    const val = document.getElementById('st-userRole').value;
+    settingsData.userRole = val;
+  }
+}
+
+function switchTheme() {
+  settingsData.theme = (settingsData.theme === 'Light') ? 'Dark' : 'Light';
+  document.getElementById('st-theme').innerText = settingsData.theme + ' Mode';
+  if (settingsData.theme ==='Dark'){
+       document.body.classList.add('dark-mode');
+  }
+  else{
+       document.body.classList.remove('dark-mode')
+  }
+  let table= document.querySelector('.settings-table');
+  if (table){
+	if (settingsData.theme ==='Dark'){
+		table.classList.add('dark-mode');
+	}else{
+		table.classList.remove('dark-mode');
+	}
+  }
+}
+
+</script>
+</body>
+</html>
+
+
+

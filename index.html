@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8" />
+ <title>Login & Registration</title>
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <style>
+  body {
+      background: #eef3f9;
+      background-image: url("login.png");
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+      padding: 32px 36px;
+      max-width: 350px;
+      width: 100%;
+    }
+    h1 {
+      color: #2196f3;
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .form-group {
+      margin-bottom: 16px;
+      position: relative; /* For positioning eye icon */
+    }
+    label {
+      font-size: 15px;
+      color: #333;
+      display: block;
+      margin-bottom: 5px;
+    }
+    input[type="text"],
+    input[type="password"] {
+      padding: 10px;
+      border-radius: 30px;
+      width: 100%;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      outline: none;
+      transition: border 0.2s;
+      box-sizing: border-box;
+    }
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      border-color: #2196f3;
+    }
+    /* Eye icon styles */
+    .toggle-password {
+      position: absolute;
+      top: 30px;
+      right: 10px;
+      cursor: pointer;
+      user-select: none;
+      font-size: 18px;
+      color: #666;
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 0;
+      display: flex;
+      align-items: center;
+    }
+    .btn {
+      width: 100%;
+      padding: 10px;
+      background: #2196f3;
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 10px 0;
+      transition: 0.2s background;
+    }
+    .btn:hover {
+      background: pink;
+    }
+    .switch-link {
+      text-align: center;
+      margin-top: 10px;
+      color: #666;
+    }
+    .switch-link span {
+      color: #2196f3;
+      cursor: pointer;
+    }
+    .message {
+      font-size: 15px;
+      text-align: center;
+      margin-bottom: 12px;
+      color: #f05a28;
+      min-height: 18px;
+    }
+ </style>
+</head>
+
+<body>
+ <div class="container">
+  <!-- LOGIN FORM -->
+  <form id="loginForm">
+   <h1>Login</h1>
+   <div class="message" id="loginMsg"></div>
+   <div class="form-group">
+    <label for="loginUsername">Username</label>
+    <input type="text" id="loginUsername" required autocomplete="off" />
+   </div>
+   <div class="form-group">
+    <label for="loginPassword">Password</label>
+    <input type="password" id="loginPassword" required autocomplete="off" />
+    <button type="button" id="togglePasswordBtn" class="toggle-password" aria-label="Show password">👁️</button>
+   </div>
+   <button type="submit" class="btn">Sign In</button>
+   <div class="switch-link">
+    New user? <span onclick="showRegister()">Register here</span>
+   </div>
+  </form>
+
+  <!-- REGISTRATION FORM -->
+  <form id="registerForm" style="display:none;">
+   <h1>Register</h1>
+   <div class="message" id="registerMsg"></div>
+   <div class="form-group">
+    <label for="regUsername">Username</label>
+    <input type="text" id="regUsername" required autocomplete="off" />
+   </div>
+   <div class="form-group">
+    <label for="regPassword">Password</label>
+    <input type="password" id="regPassword" required autocomplete="off" />
+   </div>
+   <div class="form-group">
+    <label for="regConfirm">Confirm Password</label>
+    <input type="password" id="regConfirm" required autocomplete="off" />
+   </div>
+   <button type="submit" class="btn">Register</button>
+   <div class="switch-link">
+    Already registered? <span onclick="showLogin()">Login here</span>
+   </div>
+  </form>
+ </div>
+
+ <script>
+  function getUsers() {
+    return JSON.parse(localStorage.getItem("users") || "{}");
+  }
+  function setUsers(users) {
+    localStorage.setItem("users", JSON.stringify(users));
+  }
+  // Toggle forms
+  function showRegister() {
+    document.getElementById("loginForm").style.display = "none";
+    document.getElementById("registerForm").style.display = "block";
+    document.getElementById("loginMsg").textContent = "";
+    document.getElementById("registerMsg").textContent = "";
+  }
+  function showLogin() {
+    document.getElementById("loginForm").style.display = "block";
+    document.getElementById("registerForm").style.display = "none";
+    document.getElementById("loginMsg").textContent = "";
+    document.getElementById("registerMsg").textContent = "";
+  }
+
+  // Toggle show/hide password
+  const togglePasswordBtn = document.getElementById("togglePasswordBtn");
+  const loginPassword = document.getElementById("loginPassword");
+  togglePasswordBtn.addEventListener("click", function () {
+    const type = loginPassword.getAttribute("type") === "password" ? "text" : "password";
+    loginPassword.setAttribute("type", type);
+    this.textContent = type === "password" ? "🐵" : "🙈";
+    this.setAttribute("aria-label", type === "password" ? "Show password" : "Hide password");
+  });
+
+  // Register
+  document.getElementById("registerForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const user = document.getElementById("regUsername").value.trim();
+    const pass = document.getElementById("regPassword").value;
+    const conf = document.getElementById("regConfirm").value;
+    const msg = document.getElementById("registerMsg");
+    let users = getUsers();
+
+    if (pass.length < 4) {
+      msg.textContent = "Password must be at least 4 characters.";
+      return;
+    }
+    if (pass !== conf) {
+      msg.textContent = "Passwords do not match.";
+      return;
+    }
+    if (!user) {
+      msg.textContent = "Username required.";
+      return;
+    }
+    if (users[user]) {
+      msg.textContent = "Username already exists!";
+      return;
+    }
+    users[user] = pass;
+    setUsers(users);
+    msg.style.color = "#43a047";
+    msg.textContent = "Registration successful! Please login.";
+    setTimeout(showLogin, 1000);
+  });
+
+  // Login
+  document.getElementById("loginForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const user = document.getElementById("loginUsername").value.trim();
+    const pass = document.getElementById("loginPassword").value;
+    const msg = document.getElementById("loginMsg");
+    let users = getUsers();
+
+    if (users[user] && users[user] === pass) {
+      msg.style.color = "#43a047";
+      msg.textContent = "Login successful! Redirecting...";
+      setTimeout(function () {
+        window.location.href = "codenew.html"; 
+      }, 1000);
+    } else {
+      msg.style.color = "#f05a28";
+      msg.textContent = "Invalid username or password.";
+    }
+  });
+ </script>
+</body>
+
+</html>
